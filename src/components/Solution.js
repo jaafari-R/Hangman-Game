@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function Solution() {
+export default function Solution({hint, guessed}) {
   return (
-    <div>Solution</div>
+    <div>
+        <h3>{hint}</h3>
+        <p className="guessed-word">{guessed}</p>
+    </div>
   )
 }
