@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import "./Solution.css";
 
 export default function Solution({hint, guessed}) {
   return (
