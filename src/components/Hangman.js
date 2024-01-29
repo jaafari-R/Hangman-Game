@@ -1,32 +1,54 @@
 import React, { useState } from 'react'
+import "./Hangman.css";
 
-import Body from './body/Body';
-import Head from './body/Head';
-import LeftHand from './body/LeftHand';
-import RightHand from './body/RightHand';
-import LeftLeg from './body/LeftLeg';
-import RightLeg from './body/RightLeg';
 import Solution from './Solution';
 import Letters from './Letters';
 import Gameover from './Gameover';
 
-const ATTEMPTS = 6;
-const SCORES = [0, 10, 25, 40, 60, 75, 100];
+const MAX_ATTEMPTS = 6;
+const SCORES = [100, 75, 60, 40, 25, 10, 0];
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 export default function Hangman() {
-    const [hangman, setHangman] = useState([
-        <Head />, <Body />, <RightHand />, <LeftHand />, <RightLeg />, <LeftLeg />
-    ]);
+    const [hangman, setHangman] = useState("");
     const [word, setWord] = useState("Apple");
     const [hint, setHint] = useState("A food aday keeps the doctor away.");
-    const [score, setScore] = useState(100)
+    const [score, setScore] = useState(SCORES[0])
     const [guessed, setGuessed] = useState("_____");
-    const [remainingAttempts, setRemainingAttempts] = useState(SCORES[ATTEMPTS]);
+    const [failedAttempts, setRemainingAttempts] = useState(0);
+    const [letters, setLetters] = useState(initLetters());
+    
+    function getHangmanImg() {
+        return `hangman-${failedAttempts}.svg`;
+    }
+
+    function initLetters() {
+        return LETTERS.map(letter => {
+            return {letter: letter, used: false};
+        }); 
+    }
+
+    const removeLetter = (letter) => {
+        const newLetters = [...letters];
+        const letterIndex = newLetters.findIndex(l => l.letter === letter);
+        newLetters[letterIndex] = {letter: " ", used: true};
+        setLetters(newLetters);
+    }
+
+    failedAttempt() {
+        const newFailedAttempts = failedAttempts + 1;
+        setRemainingAttempts(newFailedAttempts);
+        setScore(SCORES[newFailedAttempts])
+    }
 
     const guessLetter = (letter) => {
+        if(failedAttempts === MAX_ATTEMPTS || word === guessed) {
+            return;
+        }
+
+        removeLetter(letter);
         letter = letter.toLowerCase();
         const wordCopy = word.toLowerCase();
-        
         if(wordCopy.includes(letter)) {
             let newGuessed = guessed;
             for(let i = 0; i < word.length; ++i) {
@@ -37,21 +59,16 @@ export default function Hangman() {
             setGuessed(newGuessed);
         }
         else {
-            const newRemainingAttempts = remainingAttempts - 1;
-            setRemainingAttempts(newRemainingAttempts);
-            setScore(SCORES[newRemainingAttempts])
-            const newHangman = hangman;
-            newHangman.splice(-1, 1);
-            setHangman(newHangman);
+            failedAttempt();
         }
     }
 
     return (
-        <div>
-            {hangman.map(part => part)}
+        <div className='hangman'>
+            <img src={"hangman/" + getHangmanImg(failedAttempts)} />
             <Solution score={score} hint={hint} guessed={guessed} />
-            <Letters guessLetter={guessLetter} />
-            {remainingAttempts <= 0 && <Gameover />}
+            <Letters letters={letters} guessLetter={guessLetter} />
+            {MAX_ATTEMPTS - failedAttempts <= 0 && <Gameover />}
         </div>
     )
 }
