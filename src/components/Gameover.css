@@ -1,0 +1,28 @@
+.gameover {
+    background-color: #000e;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameover > div > button {
+}
+
+.won {
+    color: rgb(21, 255, 91);
+}
+
+.lost {
+    color: rgb(255, 21, 21);
+}
+
+.won > button {
+    background-color: rgb(21, 255, 91);
+}
+
+.lost > button {
+    background-color: rgb(255, 21, 21);
+}

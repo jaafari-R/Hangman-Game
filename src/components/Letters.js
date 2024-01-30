@@ -7,7 +7,7 @@ export default function Letters({guessLetter, letters}) {
 
     return (
         <div className='letters'>
-            {letters.map(letter => <Letter letter={letter.letter} used={letter.used} guessLetter={guessLetter}/>)}
+            {letters.map((letter, index) => <Letter key={index} letter={letter.letter} used={letter.used} guessLetter={guessLetter}/>)}
         </div>
     )
 }

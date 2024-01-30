@@ -1,5 +1,12 @@
 .hangman {
-    display: grid;
-    justify-content: center;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     text-align: center;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+img {
+    width: 40%;
 }

@@ -1,3 +1,20 @@
 .guessed-word {
     letter-spacing: 5px;
 }
+
+.low-score {
+    color: red;
+}
+
+.medium-score {
+    color: gold;
+}
+
+.high-score {
+    color: green;
+}
+
+.hint {
+    margin-block: 10px;
+    width: 400px;
+}
